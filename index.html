@@ -4,9 +4,94 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>test code </title>
   </head>
+  <style>
+    body{
+      margin:100px 0;
+      padding:100px;
+      height:500px;
+    }
+    *{
+      margin: 0;
+      padding:0;
+    }
+    div{
+      border:1px solid red;
+      line-height:50px;
+      text-align: center;
+      margin-top:0;
+    }
+    li{
+      height:200px;
+    }
+    img{
+      height:100px;
+      width:100px;
+    }
+  </style>
   <body>
-    git的第一步 1313 这是我提交的第一个v1.0.1版本
+    <div>
+      <ul id="box">
+        <li>11111</li>
+        <li>22222</li>
+        <li>33333</li>
+        <li>44444</li>
+        <li>55555</li>
+      </ul>
+      <div class="box">
+        <img src="timg.jpg" alt="" class="testimg" data-src="a.gif">
+        <img src="timg.jpg" alt="">
+        <img src="timg.jpg" alt="">
+        <img src="timg.jpg" alt="">
+        <img src="timg.jpg" alt="">
+      </div>
+
+    </div>
   </body>
+  <script>
+    var throttle = function (fn,delay) {
+      var startTime = new Date()
+      var timer = null
+      return function(){
+        var remain = delay -(endTime - timer) 
+        var endTime = new Date()
+        clearTimeout(timer)
+        if (remain <=0){
+          fn.apply(this, arguments)
+          startTime = endTime
+        } else {
+          timer = setTimeout(() => {
+            fn.apply(this, arguments)
+          },delay)
+        }
+      }
+    }
+    var curDocumentHeight = () => Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)
+    var curScrollTop = () => Math.max(document.body.scrollTop,document.documentElement.scrollTop)
+    var curScreenHeight = () => Math.max(document.body.clientHeight,document.documentElement.clientHeight)
+    var windowHeight = window.innerHeight
+    window.addEventListener('scroll',throttle(function(e){
+      var testimg = document.getElementsByClassName("testimg")[0].getBoundingClientRect().top
+      if (testimg <= windowHeight-100) {
+        document.getElementsByClassName("testimg")[0].src = document.getElementsByClassName("testimg")[0].getAttribute('data-src')
+      }
+      const btnDistance = 100
+      if (curScreenHeight() + curScrollTop() >= curDocumentHeight() - btnDistance) {
+        console.log(document.getElementsByClassName('box')[0].children,'success')
+        document.getElementsByClassName('box')[0].appendChild(document.getElementsByClassName('box')[0].children)
+      }
+    },100))
+    // var _box = document.getElementById('box')
+    // var _li = document.getElementsByTagName("li")
+    // setInterval(function(){
+    //   console.count()
+    //   _box.style = 'transition: 1s all;margin-top:-50px'
+    //   t = setTimeout(function() {
+    //     _box.appendChild(_li[0])
+    //     // _box.style = 'margin-top:0'
+    //     clearTimeout(t)
+    //   },1000)
+    // },2000)
+  </script>
 </html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>布局</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding:0;
+    }
+    html,body{
+        height:100%;
+        width:100%;
+    }
+    .wrapper{
+        display:flex;
+    }
+    div{
+        height:100%;
+    }
+    .d1{
+        background:pink;
+    }
+    .d3{
+        width:200px;
+        background:yellow;
+    }
+    .center{
+        background:black;
+        flex:1;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div class="d1">1313131</div>
+            <div class="center">
+                1313
+            </div>
+        </div>
+        <input type="text" id="input" v-model="obj.val">
+        <div id="text">{{obj.val}}</div>
+    </div>
+</body>
+<script>
+
+    var obj = {
+        value:1
+    }
+
+    //1.input输入框输入值， obj 的对象里面的一个值动态发生变化。
+    //2.obj的值发生变化 则input的val 值变化
+    var _val = ''
+    Object.defineProperty(obj,'val',{
+        set(val){
+            _val = val
+        },
+        get(){
+            return  _val
+        }
+    })
+
+    function compile(){
+        var wrapDom = document.querySelector('.container')
+        var fra = document.createDocumentFragment();
+        while(el = wrapDom.firstChild){
+            fra.appendChild(el)
+        }
+        console.log(fra.childNodes,'fra.childNodes');
+        [].slice.call(fra.childNodes).forEach(items => {
+            if (items.nodeType === 1) {
+                [].slice.call(items.attributes).forEach(item => {
+                    if (item.name === 'v-model') {
+                        items.value  = obj.value
+                        items.addEventListener('input',function(e){
+                            obj[item.value.split('.').slice(1)] = e.target.value
+                            console.log(obj)
+                        })
+                    }
+                })
+            }
+        })
+        document.body.appendChild(fra)
+    }
+
+    compile()
+
+</script>
+</html>
